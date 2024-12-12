@@ -7,6 +7,12 @@
   <maintainer email="shaunalt10@gmail.com">unitree</maintainer>
   <license>TODO: License declaration</license>
 
+  <depend>nav2_bringup</depend>
+  <depend>slam_toolkit</depend>
+  <depend>rviz2</depend>
+  
+  <exec_depend>ros2launch</exec_depend>
+  
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
