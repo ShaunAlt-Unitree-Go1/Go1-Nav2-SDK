@@ -1,5 +1,4 @@
 from ament_index_python.packages import get_package_share_directory
-import launch
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -25,8 +24,6 @@ def generate_launch_description():
 
     # create launch description
     return LaunchDescription([
-        IncludeLaunchDescription([
-            include_nav2,
-            include_slam,
-        ])
+        include_nav2,
+        include_slam,
     ])
