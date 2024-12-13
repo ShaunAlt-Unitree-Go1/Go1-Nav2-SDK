@@ -44,7 +44,7 @@ bt_navigator:
     use_sim_time: True
     global_frame: map
     robot_base_frame: r1/base_link
-    odom_topic: r1/odom
+    odom_topic: /r1/odom
     bt_loop_duration: 10
     default_server_timeout: 20
     wait_for_service_timeout: 1000
@@ -207,9 +207,9 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: scan
+        observation_sources: r1/scan
         scan:
-          topic: r1/scan
+          topic: /r1/scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -240,7 +240,7 @@ global_costmap:
         enabled: True
         observation_sources: scan
         scan:
-          topic: r1/scan
+          topic: /r1/scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
