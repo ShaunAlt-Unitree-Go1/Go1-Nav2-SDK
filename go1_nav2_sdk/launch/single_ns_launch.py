@@ -17,7 +17,7 @@ def create_static_tf(context, *args, **kwargs):
         ],
         output = 'screen'
     )
-    return [node_static_tf]
+    return node_static_tf
 
 
 def generate_launch_description():
@@ -88,14 +88,12 @@ def generate_launch_description():
     # )
 
     # creating namespaced group action
-    group = GroupAction(
-        OpaqueFunction(function = create_static_tf) \
-        + [
-            include_nav2,
-            include_rviz,
-            # include_slam,
-        ]
-    )
+    group = GroupAction([
+        OpaqueFunction(function = create_static_tf),
+        include_nav2,
+        include_rviz,
+        # include_slam,
+    ])
 
     # create launch description
     return LaunchDescription([
