@@ -31,15 +31,15 @@ def generate_launch_description():
             'use_sim_time': 'true',
         }.items()
     )
-    include_rviz = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'rviz_launch.py')),
-        condition = IfCondition(rviz),
-        launch_arguments = {
-            'namespace': '',
-            'use_namespace': 'false',
-            'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
-        }.items()
-    )
+    # include_rviz = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'rviz_launch.py')),
+    #     condition = IfCondition(rviz),
+    #     launch_arguments = {
+    #         'namespace': '',
+    #         'use_namespace': 'false',
+    #         'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
+    #     }.items()
+    # )
     include_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([path_slam + '/launch/online_async_launch.py']),
         launch_arguments = {
@@ -48,6 +48,14 @@ def generate_launch_description():
     )
 
     # creating static transform node
+    node_rviz = ExecuteProcess(
+        cmd = [
+            'ros2', 'run', 'rviz2', 'rviz2',
+            '-d', '//opt/ros/humble/share/nav2_bringup/rviz/nav2_default_view.rviz',
+        ],
+        output = 'screen',
+        condition = IfCondition(rviz)
+    )
     node_static_tf = ExecuteProcess(
         cmd = [
             'ros2', 'run', 'tf2_ros', 'static_transform_publisher',
@@ -71,7 +79,8 @@ def generate_launch_description():
     return LaunchDescription([
         declare_rviz,
         node_static_tf,
+        node_rviz,
         include_nav2,
-        include_rviz,
+        # include_rviz,
         include_slam,
     ])
