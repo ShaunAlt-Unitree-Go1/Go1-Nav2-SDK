@@ -19,7 +19,7 @@ def generate_launch_description():
     # defining launch arguments
     declare_rviz = DeclareLaunchArgument(
         'rviz',
-        default_value = 'true',
+        default_value = 'True',
         description = 'Whether to start RVIZ or not.'
     )
 
@@ -28,7 +28,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([path_nav2 + '/launch/bringup_launch.py']),
         launch_arguments = {
             'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
-            'use_sim_time': 'true',
+            'use_sim_time': 'True',
         }.items()
     )
     # include_rviz = IncludeLaunchDescription(
@@ -43,7 +43,7 @@ def generate_launch_description():
     include_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([path_slam + '/launch/online_async_launch.py']),
         launch_arguments = {
-            'use_sim_time': 'true'
+            'use_sim_time': 'True'
         }.items()
     )
 

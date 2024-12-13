@@ -44,7 +44,7 @@ def generate_launch_description():
     )
     declare_rviz = DeclareLaunchArgument(
         'rviz',
-        default_value = 'true',
+        default_value = 'True',
         description = 'Whether to start RVIZ or not.'
     )
 
@@ -55,9 +55,9 @@ def generate_launch_description():
             'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
             'namespace': namespace,
             'params_file': params_file,
-            'slam': 'true',
-            'use_namespace': 'true',
-            'use_sim_time': 'true',
+            'slam': 'True',
+            'use_namespace': 'True',
+            'use_sim_time': 'True',
         }.items()
     )
     include_rviz = IncludeLaunchDescription(
@@ -65,7 +65,7 @@ def generate_launch_description():
         condition = IfCondition(rviz),
         launch_arguments = {
             'namespace': namespace,
-            'use_namespace': 'true',
+            'use_namespace': 'True',
             'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
         }.items()
     )
