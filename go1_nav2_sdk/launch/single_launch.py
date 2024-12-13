@@ -51,7 +51,7 @@ def generate_launch_description():
     node_rviz = ExecuteProcess(
         cmd = [
             'ros2', 'run', 'rviz2', 'rviz2',
-            '-d', '//opt/ros/humble/share/nav2_bringup/rviz/nav2_default_view.rviz',
+            '-d', '/opt/ros/humble/share/nav2_bringup/rviz/nav2_default_view.rviz',
         ],
         output = 'screen',
         condition = IfCondition(rviz)
