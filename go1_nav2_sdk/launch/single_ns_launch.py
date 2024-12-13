@@ -1,11 +1,24 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction, IncludeLaunchDescription, OpaqueFunction
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
 import os
+
+def create_static_tf(context, *args, **kwargs):
+    arg_namespace = context.perform_substitution(LaunchConfiguration('namespace'))
+    node_static_tf = ExecuteProcess(
+        cmd = [
+            'ros2', 'run', 'tf2_ros', 'static_transform_publisher',
+            '--frame-id', f'{arg_namespace}/trunk',
+            '--child-frame-id', f'{arg_namespace}/base_link',
+        ],
+        output = 'screen'
+    )
+    return [node_static_tf]
+
 
 def generate_launch_description():
     # defining launch config variables
@@ -51,21 +64,12 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'rviz_launch.py')),
         condition = IfCondition(rviz),
         launch_arguments = {
-            'namespace': TextSubstitution(text=namespace),
+            'namespace': namespace,
             'use_namespace': 'true',
             'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
         }.items()
     )
 
-    # creating static transform node
-    node_static_tf = ExecuteProcess(
-        cmd = [
-            'ros2', 'run', 'tf2_ros', 'static_transform_publisher',
-            '--frame-id', TextSubstitution(text=namespace) + '/trunk',
-            '--child-frame-id', TextSubstitution(text=namespace) + '/base_link',
-        ],
-        output = 'screen'
-    )
     # node_static_tf = Node(
     #     package = 'tf2_ros',
     #     namespace = TextSubstitution(namespace),
@@ -84,12 +88,14 @@ def generate_launch_description():
     # )
 
     # creating namespaced group action
-    group = GroupAction([
-        node_static_tf,
-        include_nav2,
-        include_rviz,
-        # include_slam,
-    ])
+    group = GroupAction(
+        OpaqueFunction(function = create_static_tf) \
+        + [
+            include_nav2,
+            include_rviz,
+            # include_slam,
+        ]
+    )
 
     # create launch description
     return LaunchDescription([
