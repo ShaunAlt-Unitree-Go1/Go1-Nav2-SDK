@@ -89,7 +89,6 @@ def generate_launch_description():
 
     # creating namespaced group action
     group = GroupAction([
-        OpaqueFunction(function = create_static_tf),
         include_nav2,
         include_rviz,
         # include_slam,
@@ -100,5 +99,6 @@ def generate_launch_description():
         declare_name,
         declare_params_file,
         declare_rviz,
+        OpaqueFunction(function = create_static_tf),
         group,
     ])
