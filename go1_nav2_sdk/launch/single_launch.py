@@ -1,6 +1,6 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import ExecuteProcess, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 import os
@@ -27,16 +27,24 @@ def generate_launch_description():
     )
 
     # creating static transform node
-    node_static_tf = Node(
-        package = 'tf2_ros',
-        namespace = '',
-        executable = 'static_transform_publisher',
-        name = 'tf_static_trunk_baselink',
-        arguments = [
-            '--frame-id trunk',
-            '--child-frame-id base_link',
-        ]
+    node_static_tf = ExecuteProcess(
+        cmd = [
+            'ros2', 'run', 'tf2_ros', 'static_transform_publisher',
+            '--frame-id', 'trunk',
+            '--child-frame-id', 'base_link',
+        ],
+        output = 'screen'
     )
+    # node_static_tf = Node(
+    #     package = 'tf2_ros',
+    #     namespace = '',
+    #     executable = 'static_transform_publisher',
+    #     name = 'tf_static_trunk_baselink',
+    #     arguments = [
+    #         '--frame-id trunk',
+    #         '--child-frame-id base_link',
+    #     ]
+    # )
 
     # create launch description
     return LaunchDescription([

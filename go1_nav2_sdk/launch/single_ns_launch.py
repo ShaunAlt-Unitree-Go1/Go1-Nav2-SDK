@@ -1,6 +1,6 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
@@ -58,16 +58,24 @@ def generate_launch_description():
     )
 
     # creating static transform node
-    node_static_tf = Node(
-        package = 'tf2_ros',
-        namespace = TextSubstitution(namespace),
-        executable = 'static_transform_publisher',
-        name = 'tf_static_' + TextSubstitution(namespace) + '_trunk_baselink',
-        arguments = [
-            '--frame-id ' + TextSubstitution(namespace) + '/trunk',
-            '--child-frame-id ' + TextSubstitution(namespace) + '/base_link',
-        ]
+    node_static_tf = ExecuteProcess(
+        cmd = [
+            'ros2', 'run', 'tf2_ros', 'static_transform_publisher',
+            '--frame-id', TextSubstitution(namespace) + '/trunk',
+            '--child-frame-id', TextSubstitution(namespace) + '/base_link',
+        ],
+        output = 'screen'
     )
+    # node_static_tf = Node(
+    #     package = 'tf2_ros',
+    #     namespace = TextSubstitution(namespace),
+    #     executable = 'static_transform_publisher',
+    #     name = 'tf_static_' + TextSubstitution(namespace) + '_trunk_baselink',
+    #     arguments = [
+    #         '--frame-id ' + TextSubstitution(namespace) + '/trunk',
+    #         '--child-frame-id ' + TextSubstitution(namespace) + '/base_link',
+    #     ]
+    # )
     # include_slam = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
     #     launch_arguments = {
