@@ -7,8 +7,8 @@ from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
 import os
 
-def create_static_tf(context, *args, **kwargs):
-    arg_namespace = context.perform_substitution(LaunchConfiguration('namespace'))
+def create_static_tf(context, namespace, *args, **kwargs):
+    arg_namespace = context.perform_substitution(namespace)
     node_static_tf = ExecuteProcess(
         cmd = [
             'ros2', 'run', 'tf2_ros', 'static_transform_publisher',
@@ -99,6 +99,6 @@ def generate_launch_description():
         declare_name,
         declare_params_file,
         declare_rviz,
-        OpaqueFunction(function = create_static_tf),
+        OpaqueFunction(function = create_static_tf, args = [namespace]),
         group,
     ])
