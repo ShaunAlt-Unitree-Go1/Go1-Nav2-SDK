@@ -6,7 +6,7 @@ amcl:
     alpha3: 0.2
     alpha4: 0.2
     alpha5: 0.2
-    base_frame_id: "r1/base_footprint"
+    base_frame_id: "base_footprint"
     beam_skip_distance: 0.5
     beam_skip_error_threshold: 0.9
     beam_skip_threshold: 0.3
@@ -20,7 +20,7 @@ amcl:
     max_beams: 60
     max_particles: 2000
     min_particles: 500
-    odom_frame_id: "r1/odom"
+    odom_frame_id: "odom"
     pf_err: 0.05
     pf_z: 0.99
     recovery_alpha_fast: 0.0
@@ -37,14 +37,14 @@ amcl:
     z_max: 0.05
     z_rand: 0.5
     z_short: 0.05
-    scan_topic: r1/scan
+    scan_topic: scan
 
 bt_navigator:
   ros__parameters:
     use_sim_time: True
     global_frame: map
-    robot_base_frame: r1/base_link
-    odom_topic: /r1/odom
+    robot_base_frame: base_link
+    odom_topic: /odom
     bt_loop_duration: 10
     default_server_timeout: 20
     wait_for_service_timeout: 1000
@@ -185,8 +185,8 @@ local_costmap:
     ros__parameters:
       update_frequency: 5.0
       publish_frequency: 2.0
-      global_frame: r1/odom
-      robot_base_frame: r1/base_link
+      global_frame: odom
+      robot_base_frame: base_link
       use_sim_time: True
       rolling_window: true
       width: 3
@@ -207,9 +207,9 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: r1/scan
+        observation_sources: scan
         scan:
-          topic: /r1/scan
+          topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -229,7 +229,7 @@ global_costmap:
       update_frequency: 1.0
       publish_frequency: 1.0
       global_frame: map
-      robot_base_frame: r1/base_link
+      robot_base_frame: base_link
       use_sim_time: True
       robot_radius: 0.22
       resolution: 0.05
@@ -240,7 +240,7 @@ global_costmap:
         enabled: True
         observation_sources: scan
         scan:
-          topic: /r1/scan
+          topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -296,8 +296,8 @@ smoother_server:
 
 behavior_server:
   ros__parameters:
-    costmap_topic: r1/local_costmap/costmap_raw
-    footprint_topic: r1/local_costmap/published_footprint
+    costmap_topic: local_costmap/costmap_raw
+    footprint_topic: local_costmap/published_footprint
     cycle_frequency: 10.0
     behavior_plugins: ["spin", "backup", "drive_on_heading", "assisted_teleop", "wait"]
     spin:
@@ -310,8 +310,8 @@ behavior_server:
       plugin: "nav2_behaviors/Wait"
     assisted_teleop:
       plugin: "nav2_behaviors/AssistedTeleop"
-    global_frame: r1/odom
-    robot_base_frame: r1/base_link
+    global_frame: odom
+    robot_base_frame: base_link
     transform_tolerance: 0.1
     use_sim_time: true
     simulate_ahead_time: 2.0
@@ -344,7 +344,7 @@ velocity_smoother:
     min_velocity: [-0.26, 0.0, -1.0]
     max_accel: [2.5, 0.0, 3.2]
     max_decel: [-2.5, 0.0, -3.2]
-    odom_topic: "r1/odom"
+    odom_topic: "odom"
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]
     velocity_timeout: 1.0
