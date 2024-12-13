@@ -1,15 +1,27 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 import os
 
 def generate_launch_description():
+    # defining launch config variables
+    rviz = LaunchConfiguration('rviz')
+
     # defining nav2 and slam package paths
     path_nav2 = get_package_share_directory('nav2_bringup')
     path_sdk = get_package_share_directory('go1_nav2_sdk')
     path_slam = get_package_share_directory('slam_toolbox')
+
+    # defining launch arguments
+    declare_rviz = DeclareLaunchArgument(
+        'rviz',
+        default_value = 'true',
+        description = 'Whether to start RVIZ or not.'
+    )
 
     # defining nav2 and slam launch includes
     include_nav2 = IncludeLaunchDescription(
@@ -17,6 +29,15 @@ def generate_launch_description():
         launch_arguments = {
             'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
             'use_sim_time': 'true',
+        }.items()
+    )
+    include_rviz = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'rviz_launch.py')),
+        condition = IfCondition(rviz),
+        launch_arguments = {
+            'namespace': '',
+            'use_namespace': 'false',
+            'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
         }.items()
     )
     include_slam = IncludeLaunchDescription(
@@ -48,7 +69,9 @@ def generate_launch_description():
 
     # create launch description
     return LaunchDescription([
+        declare_rviz,
         node_static_tf,
         include_nav2,
+        include_rviz,
         include_slam,
     ])
