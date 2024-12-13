@@ -51,7 +51,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'rviz_launch.py')),
         condition = IfCondition(rviz),
         launch_arguments = {
-            'namespace': namespace,
+            'namespace': TextSubstitution(text=namespace),
             'use_namespace': 'true',
             'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
         }.items()
@@ -61,8 +61,8 @@ def generate_launch_description():
     node_static_tf = ExecuteProcess(
         cmd = [
             'ros2', 'run', 'tf2_ros', 'static_transform_publisher',
-            '--frame-id', namespace + '/trunk',
-            '--child-frame-id', namespace + '/base_link',
+            '--frame-id', TextSubstitution(text=namespace) + '/trunk',
+            '--child-frame-id', TextSubstitution(text=namespace) + '/base_link',
         ],
         output = 'screen'
     )
