@@ -4,7 +4,7 @@ from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction, I
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
-from launch_ros.actions import Node
+from launch_ros.actions import Node, PushRosNamespace
 import os
 
 def create_static_tf(context, namespace, *args, **kwargs):
@@ -56,7 +56,7 @@ def generate_launch_description():
             'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
             'namespace': namespace,
             'params_file': params_file,
-            'slam': 'True',
+            # 'slam': 'True',
             'use_namespace': 'True',
             'use_sim_time': 'True',
         }.items()
@@ -81,19 +81,18 @@ def generate_launch_description():
     #         '--child-frame-id ' + TextSubstitution(namespace) + '/base_link',
     #     ]
     # )
-    # include_slam = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
-    #     launch_arguments = {
-    #         'use_sim_time': 'true'
-    #     }.items()
-    # )
+    include_slam = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
+        launch_arguments = {
+            'use_sim_time': 'true'
+        }.items()
+    )
 
     # creating namespaced group action
-    # group = GroupAction([
-    #     include_nav2,
-    #     include_rviz,
-    #     # include_slam,
-    # ])
+    group_slam = GroupAction([
+        PushRosNamespace(namespace = namespace),
+        include_slam,
+    ])
 
     # create launch description
     return LaunchDescription([
@@ -103,5 +102,5 @@ def generate_launch_description():
         OpaqueFunction(function = create_static_tf, args = [namespace]),
         include_nav2,
         include_rviz,
-        # include_slam,
+        group_slam,
     ])
