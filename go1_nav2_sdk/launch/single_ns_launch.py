@@ -39,7 +39,8 @@ def generate_launch_description():
     )
     declare_params_file = DeclareLaunchArgument(
         'params_file',
-        default_value = os.path.join(path_nav2, 'params', 'nav2_multirobot_params_all.yaml'),
+        # default_value = os.path.join(path_nav2, 'params', 'nav2_multirobot_params_all.yaml'),
+        default_value = os.path.join(path_nav2, 'params', 'nav2_params.yaml'),
         description = 'Path to the parameters file for the Go1 Robot.'
     )
     declare_rviz = DeclareLaunchArgument(
