@@ -63,8 +63,8 @@ def generate_launch_description():
         namespace = '',
         executable = 'static_transform_publisher',
         arguments = [
-            '--frame-id trunk',
-            '--child-frame-id base_link',
+            '--frame-id ' + TextSubstitution(namespace) + '/trunk',
+            '--child-frame-id ' + TextSubstitution(namespace) + '/base_link',
         ]
     )
     # include_slam = IncludeLaunchDescription(
