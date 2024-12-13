@@ -4,6 +4,7 @@ from launch.actions import DeclareLaunchArgument, GroupAction, IncludeLaunchDesc
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
+from launch_ros.actions import Node
 import os
 
 def generate_launch_description():
@@ -14,6 +15,7 @@ def generate_launch_description():
 
     # defining nav2 and slam package paths
     path_nav2 = get_package_share_directory('nav2_bringup')
+    path_sdk = get_package_share_directory('go1_nav2_sdk')
     path_slam = get_package_share_directory('slam_toolbox')
 
     # defining launch arguments
@@ -37,11 +39,12 @@ def generate_launch_description():
     include_nav2 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'bringup_launch.py')),
         launch_arguments = {
-            'use_sim_time': 'true',
+            'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
             'namespace': namespace,
             'params_file': params_file,
             'slam': 'true',
             'use_namespace': 'true',
+            'use_sim_time': 'true',
         }.items()
     )
     include_rviz = IncludeLaunchDescription(
@@ -53,6 +56,17 @@ def generate_launch_description():
             'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
         }.items()
     )
+
+    # creating static transform node
+    node_static_tf = Node(
+        package = 'tf2_ros',
+        namespace = '',
+        executable = 'static_transform_publisher',
+        arguments = [
+            '--frame-id trunk',
+            '--child-frame-id base_link',
+        ]
+    )
     # include_slam = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
     #     launch_arguments = {
@@ -62,6 +76,7 @@ def generate_launch_description():
 
     # creating namespaced group action
     group = GroupAction([
+        node_static_tf,
         include_nav2,
         include_rviz,
         # include_slam,
