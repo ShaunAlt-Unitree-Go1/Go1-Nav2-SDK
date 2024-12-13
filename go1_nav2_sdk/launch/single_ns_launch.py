@@ -101,7 +101,7 @@ def generate_launch_description():
         declare_params_file,
         declare_rviz,
         OpaqueFunction(function = create_static_tf, args = [namespace]),
-        include_nav2,
+        # include_nav2,
         include_rviz,
         group_slam,
     ])
