@@ -31,6 +31,7 @@ def generate_launch_description():
         package = 'tf2_ros',
         namespace = '',
         executable = 'static_transform_publisher',
+        name = 'tf_static_trunk_baselink',
         arguments = [
             '--frame-id trunk',
             '--child-frame-id base_link',

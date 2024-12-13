@@ -60,8 +60,9 @@ def generate_launch_description():
     # creating static transform node
     node_static_tf = Node(
         package = 'tf2_ros',
-        namespace = '',
+        namespace = TextSubstitution(namespace),
         executable = 'static_transform_publisher',
+        name = 'tf_static_' + TextSubstitution(namespace) + '_trunk_baselink',
         arguments = [
             '--frame-id ' + TextSubstitution(namespace) + '/trunk',
             '--child-frame-id ' + TextSubstitution(namespace) + '/base_link',
