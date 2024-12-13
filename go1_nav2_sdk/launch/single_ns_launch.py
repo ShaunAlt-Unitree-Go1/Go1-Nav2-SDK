@@ -55,7 +55,7 @@ def generate_launch_description():
             'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
             'namespace': namespace,
             'params_file': params_file,
-            # 'slam': 'True',
+            'slam': 'True',
             'use_namespace': 'True',
             'use_sim_time': 'True',
         }.items()
@@ -80,12 +80,12 @@ def generate_launch_description():
     #         '--child-frame-id ' + TextSubstitution(namespace) + '/base_link',
     #     ]
     # )
-    include_slam = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
-        launch_arguments = {
-            'use_sim_time': 'true'
-        }.items()
-    )
+    # include_slam = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
+    #     launch_arguments = {
+    #         'use_sim_time': 'true'
+    #     }.items()
+    # )
 
     # creating namespaced group action
     # group = GroupAction([
