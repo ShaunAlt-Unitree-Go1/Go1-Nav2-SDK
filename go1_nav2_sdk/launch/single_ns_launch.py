@@ -17,7 +17,7 @@ def create_static_tf(context, *args, **kwargs):
         ],
         output = 'screen'
     )
-    return node_static_tf
+    return [node_static_tf]
 
 
 def generate_launch_description():
@@ -91,6 +91,7 @@ def generate_launch_description():
     group = GroupAction([
         include_nav2,
         include_rviz,
+        OpaqueFunction(function = create_static_tf),
         # include_slam,
     ])
 
@@ -99,6 +100,5 @@ def generate_launch_description():
         declare_name,
         declare_params_file,
         declare_rviz,
-        OpaqueFunction(function = create_static_tf),
         group,
     ])
