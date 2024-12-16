@@ -115,5 +115,5 @@ def generate_launch_description():
         OpaqueFunction(function = create_tfs, args = [namespace]),
         include_nav2,
         include_rviz,
-        group_slam,
+        # group_slam,
     ])
