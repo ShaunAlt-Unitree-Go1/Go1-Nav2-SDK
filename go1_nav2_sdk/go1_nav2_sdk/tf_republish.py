@@ -75,21 +75,23 @@ class TF_RePublisher(Node):
         self.declare_parameter('source', '')
         self.declare_parameter('target', 'r1')
 
-        # create QoS profile
-        _qos = QoSProfile(depth = 100)
-        _qos.durability = DurabilityPolicy.TRANSIENT_LOCAL
-
         # create publishers
         self._pub_tf = self.create_publisher(
             TFMessage,
             f'{self.target}/tf'.strip('/'),
-            _qos
+            QoSProfile(
+                depth = 100,
+                durability = DurabilityPolicy.TRANSIENT_LOCAL
+            )
         )
         ''' Publisher for the `"/tf"` topic. '''
         self._pub_tf_static = self.create_publisher(
             TFMessage,
             f'{self.target}/tf_static'.strip('/'),
-            _qos
+            QoSProfile(
+                depth = 100,
+                durability = DurabilityPolicy.TRANSIENT_LOCAL
+            )
         )
         ''' Publisher for the `"/tf_static"` topic. '''
 
@@ -98,13 +100,19 @@ class TF_RePublisher(Node):
             TFMessage,
             f'{self.source}/tf'.strip('/'),
             self._callback_tf,
-            _qos
+            QoSProfile(
+                depth = 100,
+                durability = DurabilityPolicy.TRANSIENT_LOCAL
+            )
         )
         self.create_subscription(
             TFMessage,
             f'{self.source}/tf_static'.strip('/'),
             self._callback_tf_static,
-            _qos
+            QoSProfile(
+                depth = 100,
+                durability = DurabilityPolicy.TRANSIENT_LOCAL
+            )
         )
 
         # log node construction
