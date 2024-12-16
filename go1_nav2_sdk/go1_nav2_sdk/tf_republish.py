@@ -81,7 +81,7 @@ class TF_RePublisher(Node):
             f'{self.target}/tf'.strip('/'),
             QoSProfile(
                 depth = 100,
-                reliability = ReliabilityPolicy.BEST_EFFORT,
+                reliability = ReliabilityPolicy.RELIABLE,
                 durability = DurabilityPolicy.TRANSIENT_LOCAL
             )
         )
@@ -91,7 +91,7 @@ class TF_RePublisher(Node):
             f'{self.target}/tf_static'.strip('/'),
             QoSProfile(
                 depth = 100,
-                reliability = ReliabilityPolicy.BEST_EFFORT,
+                reliability = ReliabilityPolicy.RELIABLE,
                 durability = DurabilityPolicy.TRANSIENT_LOCAL
             )
         )
