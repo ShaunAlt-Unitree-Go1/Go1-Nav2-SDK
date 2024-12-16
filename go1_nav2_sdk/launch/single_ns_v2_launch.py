@@ -126,7 +126,7 @@ def generate_launch_description():
         PushRosNamespace(namespace = namespace),
         include_slam,
         include_nav2_without_ns,
-        include_rviz_without_ns,
+        # include_rviz_without_ns,
     ])
 
     # create launch description
@@ -136,6 +136,6 @@ def generate_launch_description():
         declare_rviz,
         OpaqueFunction(function = create_tfs, args = [namespace]),
         # include_nav2,
-        # include_rviz,
+        include_rviz,
         group_slam,
     ])
