@@ -82,7 +82,7 @@ class TF_RePublisher(Node):
             QoSProfile(
                 depth = 100,
                 reliability = ReliabilityPolicy.BEST_EFFORT,
-                durability = DurabilityPolicy.VOLATILE
+                durability = DurabilityPolicy.TRANSIENT_LOCAL
             )
         )
         ''' Publisher for the `"/tf"` topic. '''
@@ -92,7 +92,7 @@ class TF_RePublisher(Node):
             QoSProfile(
                 depth = 100,
                 reliability = ReliabilityPolicy.BEST_EFFORT,
-                durability = DurabilityPolicy.VOLATILE
+                durability = DurabilityPolicy.TRANSIENT_LOCAL
             )
         )
         ''' Publisher for the `"/tf_static"` topic. '''
