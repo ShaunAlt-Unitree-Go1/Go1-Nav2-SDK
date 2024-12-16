@@ -113,7 +113,7 @@ def generate_launch_description():
 
     # creating namespaced group action
     group_slam = GroupAction([
-        # PushRosNamespace(namespace = namespace),
+        PushRosNamespace(namespace = namespace),
         include_slam,
     ])
 
