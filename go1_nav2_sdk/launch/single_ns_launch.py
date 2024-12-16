@@ -53,7 +53,8 @@ def generate_launch_description():
         'params_file',
         # default_value = os.path.join(path_nav2, 'params', 'nav2_multirobot_params_all.yaml'),
         # default_value = os.path.join(path_nav2, 'params', 'nav2_params.yaml'),
-        default_value = os.path.join(path_sdk, 'params', 'r1.yaml'),
+        # default_value = os.path.join(path_sdk, 'params', 'r1.yaml'),
+        default_value = os.path.join(path_sdk, 'params', 'r1 copy.yaml'),
         description = 'Path to the parameters file for the Go1 Robot.'
     )
     declare_rviz = DeclareLaunchArgument(
@@ -98,7 +99,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
         launch_arguments = {
             'use_sim_time': 'true',
-            'slam_params_file': os.path.join(path_sdk, 'params', 'r1.yaml'),
+            'slam_params_file': params_file,
         }.items()
     )
 
@@ -114,7 +115,7 @@ def generate_launch_description():
         declare_params_file,
         declare_rviz,
         OpaqueFunction(function = create_tfs, args = [namespace]),
-        # include_nav2,
+        include_nav2,
         include_rviz,
         group_slam,
     ])
