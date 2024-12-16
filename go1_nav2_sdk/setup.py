@@ -24,6 +24,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'tf_republish = go1_nav2_sdk.tf_republish:main',
         ],
     },
 )

@@ -7,7 +7,7 @@ from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node, PushRosNamespace
 import os
 
-def create_static_tf(context, namespace, *args, **kwargs):
+def create_tfs(context, namespace, *args, **kwargs):
     arg_namespace = context.perform_substitution(namespace)
     node_static_tf = ExecuteProcess(
         cmd = [
@@ -17,7 +17,16 @@ def create_static_tf(context, namespace, *args, **kwargs):
         ],
         output = 'screen'
     )
-    return [node_static_tf]
+    node_tf_republish = Node(
+        package = 'go1_nav2_sdk',
+        executable = 'tf_republish',
+        name = 'tf_republish_' + arg_namespace,
+        parameters = [{
+            'source': '',
+            'target': arg_namespace,
+        }]
+    )
+    return [node_static_tf, node_tf_republish,]
 
 
 def generate_launch_description():
@@ -100,7 +109,7 @@ def generate_launch_description():
         declare_name,
         declare_params_file,
         declare_rviz,
-        OpaqueFunction(function = create_static_tf, args = [namespace]),
+        OpaqueFunction(function = create_tfs, args = [namespace]),
         # include_nav2,
         include_rviz,
         group_slam,
