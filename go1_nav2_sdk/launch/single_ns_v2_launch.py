@@ -4,7 +4,7 @@ from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction, I
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
-from launch_ros.actions import Node, PushRosNamespace
+from launch_ros.actions import Node, PushRosNamespace, SetRemap
 import os
 
 def create_tfs(context, namespace, *args, **kwargs):
@@ -53,6 +53,7 @@ def generate_launch_description():
         'params_file',
         # default_value = os.path.join(path_nav2, 'params', 'nav2_multirobot_params_all.yaml'),
         # default_value = os.path.join(path_nav2, 'params', 'nav2_params.yaml'),
+        # default_value = os.path.join(path_sdk, 'params', 'r1.yaml'),
         default_value = os.path.join(path_sdk, 'params', 'r1.yaml'),
         description = 'Path to the parameters file for the Go1 Robot.'
     )
@@ -66,22 +67,11 @@ def generate_launch_description():
     include_nav2 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'bringup_launch.py')),
         launch_arguments = {
-            'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
+            'map': os.path.join(path_sdk, 'maps', 'map-test2.yaml'),
             'namespace': namespace,
             'params_file': params_file,
             # 'slam': 'True',
             'use_namespace': 'True',
-            'use_sim_time': 'True',
-        }.items()
-    )
-    include_nav2_without_ns = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'bringup_launch.py')),
-        launch_arguments = {
-            'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
-            # 'namespace': namespace,
-            'params_file': params_file,
-            # 'slam': 'True',
-            # 'use_namespace': 'True',
             'use_sim_time': 'True',
         }.items()
     )
@@ -94,14 +84,13 @@ def generate_launch_description():
             'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
         }.items()
     )
-    include_rviz_without_ns = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'rviz_launch.py')),
-        condition = IfCondition(rviz),
-        launch_arguments = {
-            # 'namespace': namespace,
-            # 'use_namespace': 'True',
-            'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
-        }.items()
+    node_rviz = ExecuteProcess(
+        cmd = [
+            'ros2', 'run', 'rviz2', 'rviz2',
+            '-d', '/opt/ros/humble/share/nav2_bringup/rviz/nav2_default_view.rviz',
+        ],
+        output = 'screen',
+        condition = IfCondition(rviz)
     )
 
     # node_static_tf = Node(
@@ -117,16 +106,28 @@ def generate_launch_description():
     include_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
         launch_arguments = {
-            'use_sim_time': 'true'
+            'use_sim_time': 'True',
+            'slam_params_file': params_file,
         }.items()
     )
 
     # creating namespaced group action
     group_slam = GroupAction([
-        PushRosNamespace(namespace = namespace),
+        # PushRosNamespace(namespace = namespace),
+        SetRemap(src='/map', dst='/r1/map'),
+        SetRemap(src='/map_metadata', dst='/r1/map_metadata'),
+        SetRemap(src='/map_updates', dst='/r1/map_updates'),
+        SetRemap(src='/scan', dst='/r1/scan'),
         include_slam,
-        include_nav2_without_ns,
-        # include_rviz_without_ns,
+    ])
+
+    # namespaced rviz group
+    group_rviz = GroupAction([
+        # PushRosNamespace(namespace = namespace),
+        # SetRemap(src='/follow_waypoints', dst='/r1/follow_waypoints'),
+        # SetRemap(src='/navigate_through_poses', dst='/r1/navigate_through_poses'),
+        # SetRemap(src='/navigate_to_pose', dst='/r1/navigate_to_pose'),
+        node_rviz,
     ])
 
     # create launch description
@@ -135,7 +136,9 @@ def generate_launch_description():
         declare_params_file,
         declare_rviz,
         OpaqueFunction(function = create_tfs, args = [namespace]),
-        # include_nav2,
-        include_rviz,
+        include_nav2,
+        # include_rviz,
+        # node_rviz,
+        group_rviz,
         group_slam,
     ])
