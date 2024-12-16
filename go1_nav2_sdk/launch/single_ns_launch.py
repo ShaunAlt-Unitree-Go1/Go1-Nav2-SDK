@@ -83,14 +83,6 @@ def generate_launch_description():
             'rviz_config': os.path.join(path_nav2, 'rviz', 'nav2_namespaced_view.rviz'),
         }.items()
     )
-    node_rviz = ExecuteProcess(
-        cmd = [
-            'ros2', 'run', 'rviz2', 'rviz2',
-            '-d', '/opt/ros/humble/share/nav2_bringup/rviz/nav2_default_view.rviz',
-        ],
-        output = 'screen',
-        condition = IfCondition(rviz)
-    )
 
     # node_static_tf = Node(
     #     package = 'tf2_ros',
@@ -123,6 +115,5 @@ def generate_launch_description():
         OpaqueFunction(function = create_tfs, args = [namespace]),
         include_nav2,
         include_rviz,
-        node_rviz,
         group_slam,
     ])
