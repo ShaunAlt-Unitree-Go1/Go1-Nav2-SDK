@@ -26,7 +26,10 @@ def create_tfs(context, namespace, *args, **kwargs):
             'target': arg_namespace,
         }]
     )
-    return [node_static_tf, node_tf_republish,]
+    return [
+        node_tf_republish,
+        node_static_tf,
+    ]
 
 
 def generate_launch_description():
