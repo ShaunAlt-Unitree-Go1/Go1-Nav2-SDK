@@ -82,9 +82,9 @@ class TF_RePublisher(Node):
             QoSProfile(
                 depth = 100,
                 reliability = ReliabilityPolicy.RELIABLE,
-                durability = DurabilityPolicy.SYSTEM_DEFAULT
+                # durability = DurabilityPolicy.SYSTEM_DEFAULT
                 # durability = DurabilityPolicy.TRANSIENT_LOCAL
-                # durability = DurabilityPolicy.UNKNOWN
+                durability = DurabilityPolicy.UNKNOWN
                 # durability = DurabilityPolicy.VOLATILE
             )
         )
