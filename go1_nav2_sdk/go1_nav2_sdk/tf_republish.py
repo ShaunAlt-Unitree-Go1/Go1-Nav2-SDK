@@ -75,6 +75,12 @@ class TF_RePublisher(Node):
         self.declare_parameter('source', '')
         self.declare_parameter('target', 'r1')
 
+        # log node construction
+        self.get_logger().info(
+            f'Starting Creation of TF_RePublisher(source = {self.source!r}, target = '
+            + f'{self.target!r})'
+        )
+
         # create publishers
         self._pub_tf = self.create_publisher(
             TFMessage,
