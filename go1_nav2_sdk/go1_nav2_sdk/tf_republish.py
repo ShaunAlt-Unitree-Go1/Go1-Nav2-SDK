@@ -22,7 +22,7 @@ import logging
 # used for ros
 import rclpy # type: ignore
 from rclpy.node import Node # type: ignore
-from rclpy.qos import DurabilityPolicy, QoSProfile # type: ignore
+from rclpy.qos import DurabilityPolicy, ReliabilityPolicy, QoSProfile # type: ignore
 
 # used for topic messages
 from tf2_msgs.msg import TFMessage # type: ignore
@@ -81,6 +81,7 @@ class TF_RePublisher(Node):
             f'{self.target}/tf'.strip('/'),
             QoSProfile(
                 depth = 100,
+                reliability = ReliabilityPolicy.BEST_EFFORT,
                 durability = DurabilityPolicy.TRANSIENT_LOCAL
             )
         )
@@ -90,6 +91,7 @@ class TF_RePublisher(Node):
             f'{self.target}/tf_static'.strip('/'),
             QoSProfile(
                 depth = 100,
+                reliability = ReliabilityPolicy.BEST_EFFORT,
                 durability = DurabilityPolicy.TRANSIENT_LOCAL
             )
         )
