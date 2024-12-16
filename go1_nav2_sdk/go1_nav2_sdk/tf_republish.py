@@ -78,13 +78,13 @@ class TF_RePublisher(Node):
         self._pub_tf = self.create_publisher(
             TFMessage,
             f'{self.target}/tf'.strip('/'),
-            10
+            100
         )
         ''' Publisher for the `"/tf"` topic. '''
         self._pub_tf_static = self.create_publisher(
             TFMessage,
             f'{self.target}/tf_static'.strip('/'),
-            10
+            100
         )
         ''' Publisher for the `"/tf_static"` topic. '''
 
@@ -93,13 +93,13 @@ class TF_RePublisher(Node):
             TFMessage,
             f'{self.source}/tf'.strip('/'),
             self._callback_tf,
-            10
+            100
         )
         self.create_subscription(
             TFMessage,
             f'{self.source}/tf_static'.strip('/'),
             self._callback_tf_static,
-            10
+            100
         )
 
         # log node construction
