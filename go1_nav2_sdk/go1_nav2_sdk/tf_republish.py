@@ -84,8 +84,8 @@ class TF_RePublisher(Node):
                 reliability = ReliabilityPolicy.RELIABLE,
                 # durability = DurabilityPolicy.SYSTEM_DEFAULT
                 # durability = DurabilityPolicy.TRANSIENT_LOCAL
-                durability = DurabilityPolicy.UNKNOWN
-                # durability = DurabilityPolicy.VOLATILE
+                # durability = DurabilityPolicy.UNKNOWN
+                durability = DurabilityPolicy.VOLATILE
             )
         )
         ''' Publisher for the `"/tf"` topic. '''
