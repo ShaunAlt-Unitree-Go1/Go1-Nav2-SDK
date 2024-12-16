@@ -97,7 +97,8 @@ def generate_launch_description():
     include_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
         launch_arguments = {
-            'use_sim_time': 'true'
+            'use_sim_time': 'true',
+            'slam_params_file': os.path.join(path_sdk, 'params', 'r1.yaml'),
         }.items()
     )
 
