@@ -84,7 +84,7 @@ class TF_RePublisher(Node):
         # create publishers
         self._pub_tf = self.create_publisher(
             TFMessage,
-            f'{self.target}/tf'.strip('/'),
+            '/' + f'{self.target}/tf'.strip('/'),
             QoSProfile(
                 depth = 100,
                 reliability = ReliabilityPolicy.RELIABLE,
@@ -97,7 +97,7 @@ class TF_RePublisher(Node):
         ''' Publisher for the `"/tf"` topic. '''
         self._pub_tf_static = self.create_publisher(
             TFMessage,
-            f'{self.target}/tf_static'.strip('/'),
+            '/' + f'{self.target}/tf_static'.strip('/'),
             QoSProfile(
                 depth = 100,
                 reliability = ReliabilityPolicy.RELIABLE,
