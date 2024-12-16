@@ -67,7 +67,7 @@ def generate_launch_description():
     include_nav2 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(path_nav2, 'launch', 'bringup_launch.py')),
         launch_arguments = {
-            'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
+            'map': os.path.join(path_sdk, 'maps', 'map-test2.yaml'),
             'namespace': namespace,
             'params_file': params_file,
             # 'slam': 'True',
@@ -106,14 +106,14 @@ def generate_launch_description():
     include_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(path_slam + '/launch/online_async_launch.py'),
         launch_arguments = {
-            'use_sim_time': 'true',
+            'use_sim_time': 'True',
             'slam_params_file': params_file,
         }.items()
     )
 
     # creating namespaced group action
     group_slam = GroupAction([
-        PushRosNamespace(namespace = namespace),
+        # PushRosNamespace(namespace = namespace),
         SetRemap(src='/map', dst='/r1/map'),
         SetRemap(src='/map_metadata', dst='/r1/map_metadata'),
         SetRemap(src='/map_updates', dst='/r1/map_updates'),
