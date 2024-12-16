@@ -22,6 +22,7 @@ import logging
 # used for ros
 import rclpy # type: ignore
 from rclpy.node import Node # type: ignore
+from rclpy.qos import DurabilityPolicy, QoSProfile # type: ignore
 
 # used for topic messages
 from tf2_msgs.msg import TFMessage # type: ignore
@@ -74,17 +75,21 @@ class TF_RePublisher(Node):
         self.declare_parameter('source', '')
         self.declare_parameter('target', 'r1')
 
+        # create QoS profile
+        _qos = QoSProfile(depth = 100)
+        _qos.durability = DurabilityPolicy.TRANSIENT_LOCAL
+
         # create publishers
         self._pub_tf = self.create_publisher(
             TFMessage,
             f'{self.target}/tf'.strip('/'),
-            100
+            _qos
         )
         ''' Publisher for the `"/tf"` topic. '''
         self._pub_tf_static = self.create_publisher(
             TFMessage,
             f'{self.target}/tf_static'.strip('/'),
-            100
+            _qos
         )
         ''' Publisher for the `"/tf_static"` topic. '''
 
@@ -93,13 +98,13 @@ class TF_RePublisher(Node):
             TFMessage,
             f'{self.source}/tf'.strip('/'),
             self._callback_tf,
-            100
+            _qos
         )
         self.create_subscription(
             TFMessage,
             f'{self.source}/tf_static'.strip('/'),
             self._callback_tf_static,
-            100
+            _qos
         )
 
         # log node construction
