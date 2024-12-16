@@ -124,9 +124,9 @@ def generate_launch_description():
     # namespaced rviz group
     group_rviz = GroupAction([
         # PushRosNamespace(namespace = namespace),
-        SetRemap(src='/follow_waypoints', dst='/r1/follow_waypoints'),
-        SetRemap(src='/navigate_through_poses', dst='/r1/navigate_through_poses'),
-        SetRemap(src='/navigate_to_pose', dst='/r1/navigate_to_pose'),
+        # SetRemap(src='/follow_waypoints', dst='/r1/follow_waypoints'),
+        # SetRemap(src='/navigate_through_poses', dst='/r1/navigate_through_poses'),
+        # SetRemap(src='/navigate_to_pose', dst='/r1/navigate_to_pose'),
         node_rviz,
     ])
 
@@ -137,8 +137,8 @@ def generate_launch_description():
         declare_rviz,
         OpaqueFunction(function = create_tfs, args = [namespace]),
         include_nav2,
-        # include_rviz,
+        include_rviz,
         # node_rviz,
-        group_rviz,
+        # group_rviz,
         group_slam,
     ])
