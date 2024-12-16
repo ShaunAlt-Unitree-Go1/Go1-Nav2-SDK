@@ -113,7 +113,7 @@ class TF_RePublisher(Node):
             self._callback_tf,
             QoSProfile(
                 depth = 100,
-                durability = DurabilityPolicy.TRANSIENT_LOCAL
+                durability = DurabilityPolicy.VOLATILE
             )
         )
         self.create_subscription(
