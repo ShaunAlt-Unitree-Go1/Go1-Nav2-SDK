@@ -113,7 +113,7 @@ def generate_launch_description():
 
     # creating namespaced group action
     group_slam = GroupAction([
-        # PushRosNamespace(namespace = namespace),
+        PushRosNamespace(namespace = namespace),
         SetRemap(src='/map', dst='/r1/map'),
         SetRemap(src='/map_metadata', dst='/r1/map_metadata'),
         SetRemap(src='/map_updates', dst='/r1/map_updates'),
