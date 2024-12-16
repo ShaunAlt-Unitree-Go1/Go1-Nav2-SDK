@@ -1,6 +1,6 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction, IncludeLaunchDescription, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction, IncludeLaunchDescription, OpaqueFunction, SetRemap
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
@@ -114,6 +114,10 @@ def generate_launch_description():
     # creating namespaced group action
     group_slam = GroupAction([
         PushRosNamespace(namespace = namespace),
+        SetRemap(src='/map', dst='/r1/map'),
+        SetRemap(src='/map_metadata', dst='/r1/map_metadata'),
+        SetRemap(src='/map_updates', dst='/r1/map_updates'),
+        SetRemap(src='/scan', dst='/r1/scan'),
         include_slam,
     ])
 
