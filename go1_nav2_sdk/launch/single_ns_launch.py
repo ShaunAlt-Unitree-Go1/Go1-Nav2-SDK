@@ -70,7 +70,7 @@ def generate_launch_description():
             'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
             'namespace': namespace,
             'params_file': params_file,
-            'slam': 'True',
+            # 'slam': 'True',
             'use_namespace': 'True',
             'use_sim_time': 'True',
         }.items()
@@ -113,7 +113,7 @@ def generate_launch_description():
 
     # creating namespaced group action
     group_slam = GroupAction([
-        PushRosNamespace(namespace = namespace),
+        # PushRosNamespace(namespace = namespace),
         include_slam,
     ])
 
@@ -126,5 +126,5 @@ def generate_launch_description():
         include_nav2,
         # include_rviz,
         node_rviz,
-        # group_slam,
+        group_slam,
     ])
