@@ -54,7 +54,7 @@ def generate_launch_description():
         # default_value = os.path.join(path_nav2, 'params', 'nav2_multirobot_params_all.yaml'),
         # default_value = os.path.join(path_nav2, 'params', 'nav2_params.yaml'),
         # default_value = os.path.join(path_sdk, 'params', 'r1.yaml'),
-        default_value = os.path.join(path_sdk, 'params', 'r1 copy.yaml'),
+        default_value = os.path.join(path_sdk, 'params', 'r1.yaml'),
         description = 'Path to the parameters file for the Go1 Robot.'
     )
     declare_rviz = DeclareLaunchArgument(
@@ -113,7 +113,7 @@ def generate_launch_description():
 
     # creating namespaced group action
     group_slam = GroupAction([
-        # PushRosNamespace(namespace = namespace),
+        PushRosNamespace(namespace = namespace),
         SetRemap(src='/map', dst='/r1/map'),
         SetRemap(src='/map_metadata', dst='/r1/map_metadata'),
         SetRemap(src='/map_updates', dst='/r1/map_updates'),
@@ -135,7 +135,7 @@ def generate_launch_description():
         OpaqueFunction(function = create_tfs, args = [namespace]),
         include_nav2,
         # include_rviz,
-        # node_rviz,
-        group_rviz,
+        node_rviz,
+        # group_rviz,
         group_slam,
     ])
