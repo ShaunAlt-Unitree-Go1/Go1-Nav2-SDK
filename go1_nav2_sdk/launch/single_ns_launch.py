@@ -121,6 +121,12 @@ def generate_launch_description():
         include_slam,
     ])
 
+    # namespaced rviz group
+    group_rviz = GroupAction([
+        PushRosNamespace(namespace = namespace),
+        node_rviz,
+    ])
+
     # create launch description
     return LaunchDescription([
         declare_name,
@@ -129,6 +135,7 @@ def generate_launch_description():
         OpaqueFunction(function = create_tfs, args = [namespace]),
         include_nav2,
         # include_rviz,
-        node_rviz,
+        # node_rviz,
+        group_rviz,
         group_slam,
     ])
