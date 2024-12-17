@@ -70,7 +70,7 @@ def generate_launch_description():
             'map': os.path.join(path_sdk, 'maps', 'map-test2.yaml'),
             'namespace': namespace,
             'params_file': params_file,
-            # 'slam': 'True',
+            'slam': 'False',
             'use_namespace': 'True',
             'use_sim_time': 'True',
         }.items()
