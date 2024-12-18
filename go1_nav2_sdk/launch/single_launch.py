@@ -13,6 +13,7 @@ def generate_launch_description():
 
     # defining nav2 and slam package paths
     path_nav2 = get_package_share_directory('nav2_bringup')
+    params_file = LaunchConfiguration('params_file')
     path_sdk = get_package_share_directory('go1_nav2_sdk')
     path_slam = get_package_share_directory('slam_toolbox')
 
@@ -22,12 +23,23 @@ def generate_launch_description():
         default_value = 'True',
         description = 'Whether to start RVIZ or not.'
     )
+    declare_params_file = DeclareLaunchArgument(
+        'params_file',
+        # default_value = os.path.join(path_nav2, 'params', 'nav2_multirobot_params_all.yaml'),
+        # default_value = os.path.join(path_nav2, 'params', 'nav2_params.yaml'),
+        # default_value = os.path.join(path_sdk, 'params', 'r1.yaml'),
+        default_value = os.path.join(path_sdk, 'params', 'noname.yaml'),
+        description = 'Path to the parameters file for the Go1 Robot.'
+    )
 
     # defining nav2 and slam launch includes
     include_nav2 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([path_nav2 + '/launch/bringup_launch.py']),
         launch_arguments = {
             'map': os.path.join(path_sdk, 'maps/map-test2.yaml'),
+            'namespace': '',
+            'params_file': params_file,
+            'use_namespace': 'False',
             'use_sim_time': 'True',
         }.items()
     )
@@ -78,6 +90,7 @@ def generate_launch_description():
     # create launch description
     return LaunchDescription([
         declare_rviz,
+        declare_params_file,
         node_static_tf,
         node_rviz,
         include_nav2,
