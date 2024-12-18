@@ -79,8 +79,8 @@ def generate_launch_description():
     return LaunchDescription([
         declare_rviz,
         node_static_tf,
-        # node_rviz,
+        node_rviz,
         include_nav2,
-        include_rviz,
+        # include_rviz,
         # include_slam,
     ])
