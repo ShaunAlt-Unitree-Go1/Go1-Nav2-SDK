@@ -139,6 +139,6 @@ def generate_launch_description():
         include_nav2,
         include_rviz,
         # node_rviz,
-        group_rviz,
-        group_slam,
+        # group_rviz,
+        # group_slam,
     ])
